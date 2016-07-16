@@ -116,10 +116,12 @@ def test(lastRun=None, epochs=1):
         #print ('Mean error: %f'%(numpy.mean(meanError)))
         
         print "...validating"
+        validationBatchSize=500
+        validationBatchCount=20
         totalcorrect=0 
-        for k in range(0,20):
+        for k in range(0,validationBatchCount):
             correct=0 
-            for s in range((k*hidden),((k+1)*hidden)):
+            for s in range((k*validationBatchSize),((k+1)*validationBatchSize)):
                 outs = []
                 for c in range(0, 10):
                     outs.append(proc(divas[c],dataset[1][0][s]))
