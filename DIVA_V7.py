@@ -58,6 +58,9 @@ def test(lastRun=None, epochs=1):
     global lastR
     global lastV
     global dataset
+    
+    hidden=500
+    inputdim=784
 
     dataset = load_data('mnist.pkl.gz')
         
@@ -66,12 +69,12 @@ def test(lastRun=None, epochs=1):
     if(lastRun==None):
 
         sharedWeights=numpy.asarray(rng.uniform(
-            low=-numpy.sqrt(6. / (500+785)),
-            high=numpy.sqrt(6. / (500+785)),
-            size=(500, 785)
+            low=-numpy.sqrt(6. / (hidden+inputdim+1)),
+            high=numpy.sqrt(6. / (hidden+inputdim+1)),
+            size=(hidden, inputdim+1)
             ),
             dtype=numpy.float32)
-#sharedBiases=numpy.random.rand(500)
+#sharedBiases=numpy.random.rand(hidden)
 
         divas = []
 
@@ -99,23 +102,24 @@ def test(lastRun=None, epochs=1):
         print 'training'
         #for s in range(0, 49999):
         meanError=[]
-        for r in range(0, 100):
-            err=[]
-            for s in range((r*500), (500*(r+1))):
-                channel=int(dataset[0][1][s])        
-                err.append(divas[channel].train(dataset[0][0][s],learning_rate))
-            print numpy.mean(err)
-            meanError.append(err)            
+        for r in range(0, 50000):
+            divas[channel].train2(dataset[0][0][s],learning_rate)
+            #err=[]
+            #for s in range((r*hidden), (hidden*(r+1))):
+             #   channel=int(dataset[0][1][s])        
+             #   err.append(divas[channel].train(dataset[0][0][s],learning_rate))
+            #print numpy.mean(err)
+            #meanError.append(err)            
             #if(learning_rate>.001):
                #learning_rate-=.001
                #print 'Learning rate dropping to %f' % (learning_rate)
-        print ('Mean error: %f'%(numpy.mean(meanError)))
+        #print ('Mean error: %f'%(numpy.mean(meanError)))
         
         print "...validating"
         totalcorrect=0 
         for k in range(0,20):
             correct=0 
-            for s in range((k*500),((k+1)*500)):
+            for s in range((k*hidden),((k+1)*hidden)):
                 outs = []
                 for c in range(0, 10):
                     outs.append(proc(divas[c],dataset[1][0][s]))
@@ -265,15 +269,15 @@ start DIVA class section
     
     
 class diva(object):
-    def __init__(self, sharedWeights,sharedRNG):
+    def __init__(self, sharedWeights,sharedRNG, hidden=500, inputDim=784):
         self.l1W=sharedWeights
         #self.l1b=sharedBiases
         self.rng=sharedRNG
 
         self.l2W=numpy.asarray(self.rng.uniform(
-                    low=-numpy.sqrt(6. / (501+784)),
-                    high=numpy.sqrt(6. / (501+784)),
-                    size=(784, 501)
+                    low=-numpy.sqrt(6. / (hidden+inputDim)),
+                    high=numpy.sqrt(6. / (hidden+1+inputDim)),
+                    size=(inputDim, hidden+1)
                 ),
                 dtype=numpy.float32)      
         
@@ -303,7 +307,7 @@ class diva(object):
         l1pd=numpy.dot((numpy.append(numpy.ones(1, dtype=numpy.float32), inVec)),numpy.transpose(self.l1W))
         L1Werr=numpy.dot(numpy.transpose(self.l2W),L2Werr)*numpy.append(numpy.ones(1, dtype=numpy.float32), (l1pd*(1-l1pd)))
         #print L1Werr.shape
-        L1WerrSlice=L1Werr[1:501,1:501]
+        L1WerrSlice=L1Werr[1:(hidden+1),1:(hidden+1)]
         L1WerrMat=backPass(inVec, numpy.dot(L1WerrSlice, numpy.transpose(hidVec)))
         #print L1WerrMat.shape
         #print self.l1W.shape
@@ -325,7 +329,7 @@ class diva(object):
         l1pd=numpy.dot((numpy.append(numpy.ones(1, dtype=numpy.float32), inVec)),numpy.transpose(self.l1W))
         L1Werr=numpy.dot(numpy.transpose(self.l2W),L2Werr)*numpy.append(numpy.ones(1, dtype=numpy.float32), (l1pd*(1-l1pd)))
         #print L1Werr.shape
-        L1WerrSlice=L1Werr[1:501,1:501]
+        L1WerrSlice=L1Werr[1:(hidden+1),1:(hidden+1)]
         L1WerrMat=backPass(inVec, numpy.dot(L1WerrSlice, numpy.transpose(hidVec)))
         #print L1WerrMat.shape
         #print self.l1W.shape
