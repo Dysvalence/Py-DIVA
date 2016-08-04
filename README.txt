@@ -4,7 +4,7 @@ README
 
 This is a Keras, Python & Numpy based implementation of the Divergent Autoencoder(DIVA) model of human category learning (Kurtz, 2007), configured to run on the MNIST dataset as a machine learning algorithm. 
 
-The purpose of this was to determine if DIVA could be compared to other machine learning algorithms, as well as performance on a much larger dataset than had been previously tested. This is a proof of concept script using Keras to utilize a gpu via Theano and CUDA. It's incredibly hacky, academic code and I planned to refactor it before even starting, since it was not guaranteed that the implementation I used would even work with Keras; early attempts with Theano were erratic due to caching.
+The purpose of this was to determine if DIVA could be compared to other machine learning algorithms, as well as performance on a much larger dataset than had been previously tested. This is a refactored version of the original proof of concept script using Keras to utilize a gpu via Theano and CUDA. This implementation is not coded robustly, but should be sufficient for research use by others. 
 
 ---- Background	----
 
@@ -15,9 +15,14 @@ The implementation uses 10 autoencoders that share a hidden layer, and trains pe
 	
 ---- Files ----
 
-The script is in the DIVA.ipnyb jupyter notebook. Standalone packages are in the works
+DIVA.ipynb runs DIVA on MNIST
+
+DIVA.py contains the core code
+
+diva_tests.py contains code tests
 
 ---- References ----
+
 Original DIVA paper:
 	Kurtz, K. J. (2007). The divergent autoencoder (DIVA) model of category learning. Psychonomic Bulletin & Review, 14(4), 560-576.
 
