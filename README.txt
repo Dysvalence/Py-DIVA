@@ -15,26 +15,36 @@ The implementation uses multiple autoencoders, one for each class, that all shar
 ---- Function defs ----
 #After importing DIVA.py, create a new diva object, and use the train, predict, and test functions. 
 
-#Initialize object. Uses Keras defaults for weight initialization
-def __init__(self, num_channels, input_dim, num_hidden, 	# int, int, int. 
-	hidden_act='sigmoid', 					#hidden layer activation, cf https://keras.io/activations/
-	loss='mean_sqared_error', 				#Loss function while training model. cf https://keras.io/objectives/
-	optimizer=SGD(), 					#Stochastic gradient descent. More advanced optimizers don't seem to work well, presumably because the expected loss surface changes between examples
-	prev_model=None, 					#Attach DIVA to the end of another Keras sequential model, instead of making a new shared layer use this for deep/convolutional/dropout DIVAs
-	compare=None 						#What function to determine which reproduction is the most accurate, Defaults to compareMSE for mean squared error, use compareMAE for mean absolute error
+#Initialize object. Uses Keras defaults for weight initialization (currently Glorot style uniform)
+def __init__(self, num_channels, input_dim, num_hidden, 	
+	# int, int, int. 
+	hidden_act='sigmoid', 					
+	#hidden layer activation, cf https://keras.io/activations/
+	loss='mean_sqared_error', 				
+	#Loss function while training model. cf https://keras.io/objectives/
+	optimizer=SGD(), 					
+	#Stochastic gradient descent. More advanced optimizers don't seem to work well, presumably because the expected loss surface changes between examples.
+	prev_model=None, 					
+	#Attach DIVA to the end of another Keras sequential model, instead of making a new shared layer use this for deep/convolutional/dropout DIVAs
+	compare=None 						
+	#What function to determine which reproduction is the most accurate, Defaults to compareMSE for mean squared error, use compareMAE for mean absolute error
 	):
         
 #All functions expect numerical feature data in the form X_data[n_examples][n_features] and the correct channel number at Y_data[n_examples]
 #alt_X_train and alt_X_test is for Expected output if different from input. Needed for convolution since Keras expects a different, preprocessed shape.
 
-def train(self, X_train, Y_train, nb_epoch, 			#Train model. Set verbose to 1 to print epoch, loss, and validation accuracy on every epoch, zero to suppress.
-		verbose, X_test, Y_test				#Returns [losses[n_epochs],validation_accuracy[n_epochs]]
+#Train model. Set verbose to 1 to print epoch, loss, and validation accuracy on every epoch, zero to suppress.
+#Returns [losses[n_epochs],validation_accuracy[n_epochs]]
+def train(self, X_train, Y_train, nb_epoch, 		
+		verbose, X_test, Y_test				
 		alt_X_train=None, alt_X_test=None):		
- 			
-def predict(self, X_test, alt_X_test=None):	 		#Convert raw output into model predictions; returns a list of predictions with the same length as the test data.
+ 
+#Convert raw output into model predictions; returns a list of predictions with the same length as the test data. 	
+def predict(self, X_test, alt_X_test=None):	 		
   
-def test(self, X_test, y_test,  				#Returns test accuracy on validation data; for checking functionality see diva_tests.py 
-verbose, alt_X_test=None):					#Set verbose to 1 to print test accuracy
+#Returns test accuracy on validation data; for code testing see diva_tests.py. Set verbose to 1 to print test accuracy.
+def test(self, X_test, y_test,  			
+verbose, alt_X_test=None):
 
 ---- Files ----
 
