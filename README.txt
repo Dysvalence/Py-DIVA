@@ -15,7 +15,7 @@ The implementation uses multiple autoencoders, one for each class, that all shar
 ---- Function defs ----
 #After importing DIVA.py, create a new diva object, and use the train, predict, and test functions. 
 
-#Initialize object. Uses Keras defaults for weight initialization
+#Initialize object. Uses Keras defaults for weight initialization(Glorot uniform)
 def __init__(self, num_channels, input_dim, num_hidden, 	# int, int, int. 
 	hidden_act='sigmoid', 					#hidden layer activation, cf https://keras.io/activations/
 	loss='mean_sqared_error', 				#Loss function while training model. cf https://keras.io/objectives/
