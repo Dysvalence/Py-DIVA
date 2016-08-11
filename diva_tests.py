@@ -1,3 +1,7 @@
+#Code functionality tests
+
+#TODO: add tests for deep and convolutional DIVA
+
 import DIVA
 
 def channelTest(model): # testing if the shared layer is actually shared, and that the channels are truly independent
