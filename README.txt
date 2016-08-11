@@ -18,16 +18,24 @@ The implementation uses multiple autoencoders, one for each class, that all shar
 #Initialize object. Uses Keras defaults for weight initialization (currently Glorot style uniform)
 def __init__(self, num_channels, input_dim, num_hidden, 	
 	# int, int, int. 
+	
 	hidden_act='sigmoid', 					
 	#hidden layer activation, cf https://keras.io/activations/
+	
 	loss='mean_sqared_error', 				
 	#Loss function while training model. cf https://keras.io/objectives/
+	
 	optimizer=SGD(), 					
-	#Stochastic gradient descent. More advanced optimizers don't seem to work well, presumably because the expected loss surface changes between examples.
+	#Stochastic gradient descent. More advanced optimizers don't seem to work well, 
+	#presumably because the expected loss surface changes between examples.
+	
 	prev_model=None, 					
-	#Attach DIVA to the end of another Keras sequential model, instead of making a new shared layer use this for deep/convolutional/dropout DIVAs
+	#Attach DIVA to the end of another Keras sequential model, instead of making 
+	#a new shared layer. Use this for deep/convolutional/dropout DIVAs
+	
 	compare=None 						
-	#What function to determine which reproduction is the most accurate, Defaults to compareMSE for mean squared error, use compareMAE for mean absolute error
+	#What function to determine which reproduction is the most accurate, Defaults to 
+	#compareMSE for mean squared error, use compareMAE for mean absolute error
 	):
         
 #All functions expect numerical feature data in the form X_data[n_examples][n_features] and the correct channel number at Y_data[n_examples]
